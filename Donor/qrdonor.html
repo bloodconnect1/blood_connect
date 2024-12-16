@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QR Code Generator</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Roboto', sans-serif;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        margin-top: 4rem;
+        gap: 20px;
+        background-image: linear-gradient(to bottom right, #fceeef, #ca9093, #f7f7f7);
+        height: 100vh;
+        animation: fadeIn 1.5s ease-in;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+      .card__container {
+        background-color: #291919;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 20px;
+        box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
+        padding: 30px;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .card__container:hover {
+        transform: scale(1.08);
+        box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+      }
+
+      #qrcode {
+        margin: 20px 0;
+        animation: zoomIn 1s ease;
+      }
+
+      @keyframes zoomIn {
+        from { transform: scale(0); }
+        to { transform: scale(1); }
+      }
+
+      .title {
+        font-weight: 700;
+        font-size: 2.2rem;
+        color: #df5f65;
+        letter-spacing: 1px;
+      }
+
+      .subtitle {
+        font-size: 1.2rem;
+        color: #555;
+        font-style: italic;
+      }
+
+      .btn-download {
+        background-color: #df5f65;
+        color: #fff;
+        font-weight: bold;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .btn-download:hover {
+        background-color: #c14a51;
+        transform: scale(1.1);
+      }
+
+      .btn-download:focus {
+        outline: none;
+        box-shadow: 0 0 10px rgba(209, 91, 91, 0.5);
+      }
+    </style>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"
+      integrity="sha512-ZDSPMa/JM1D+7kdg2x3BsruQ6T/JpJo3jWDWkCZsP+5yVyp1KfESqLI+7RqB5k24F7p2cV7i2YHh/890y6P6Sw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav
+      id="mainNavbar"
+      class="navbar navbar-expand-lg navbar-light bg-light fixed-top py-0"
+    >
+      <div class="container">
+        <a href="./donorhomepage.html" class="img-fluid navbar-brand"
+          ><img src="/imgs/list-images/logo.png"
+          width="120"
+          height="60"
+          style="border-radius: 15px;"
+          class="img-hover"
+        /></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="justify-content-end collapse navbar-collapse"
+          id="navbarNavDropdown"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item pr-2">
+              <a href="./donorhomepage.html" class="nav-link">Home</a>
+            </li>
+
+            <li class="nav-item pr-2">
+              <a href="./donateblood.html" target="_blank" class="nav-link"
+                >donate</a
+              >
+            </li>
+            <li class="nav-item pr-2">
+              <a href="./qrdonor.html" target="_blank" class="nav-link"
+                >QR code</a
+              >
+            </li>
+            <li class="nav-item pr-2">
+              <!-- <a href="../Authentication/login.html" class="nav-link">logout</a> -->
+              <button id="logout-btn" class="btn btn-danger p-1">logout</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="card__container">
+      <div id="qrcode"></div>
+
+      <div class="lettering">
+        <span class="title">SCAN ME!</span>
+        <span class="subtitle">
+          <i>To get My Medical Info</i>
+        </span>
+      </div>
+
+      <button class="btn-download" onclick="downloadQRCode()">Download QR Code</button>
+    </div>
+
+    <!-- Footer -->
+    <footer id="contact-us">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-sm-5 center vertical-center">
+            <img src="/imgs/list-images/logo.png" style="border-radius: 15px;" class="footer-logo img-fluid img-hover" />
+          </div>
+          <div class="col-4 col-sm-2 center">
+            <ul>
+              <li>
+                <p><a href="#intro-slide">Home</a></p>
+              </li>
+              <li>
+                <p><a href="./Authentication/login.html">Login</a></p>
+              </li>
+            </ul>
+          </div>
+          <div class="col-8 col-sm-5 center">
+            <ul>
+              <li>
+                <p><i class="fab fa-instagram mr-2"></i><a href="#">bloodconnect</a></p>
+              </li>
+              <li>
+                <p><i class="fab fa-facebook mr-2"></i><a href="#">bloodconnect</a></p>
+              </li>
+              <li>
+                <p><i class="fab fa-twitter mr-2"></i><a href="#">bloodconnect</a></p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      // Function to generate QR code
+      function generateQRCode(text) {
+        var qrCodeDiv = document.getElementById("qrcode");
+        qrCodeDiv.innerHTML = ""; // Clear any existing QR code
+
+        var qr = qrcode(0, "M"); // Create QRCode object
+        qr.addData(text); // Add data to QRCode
+        qr.make(); // Generate QRCode
+
+        qrCodeDiv.innerHTML = qr.createImgTag(); // Display QRCode image
+        qrCodeDiv.querySelector("img").id = "qr-image"; // Assign ID to the generated image
+      }
+
+      generateQRCode(
+        `https://bloodconnect1.github.io/blood_connect//qrreader?email=${localStorage.getItem(
+          "email"
+        )}`
+      );
+
+      // Function to download QR code
+      function downloadQRCode() {
+        const qrImage = document.getElementById("qr-image");
+        if (qrImage) {
+          const link = document.createElement("a");
+          link.href = qrImage.src;
+          link.download = "QR_Code.png";
+          link.click();
+        } else {
+          alert("QR Code not generated yet.");
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -423,18 +423,19 @@ input[type="radio"]:checked {
   colors
   ==========*/
 
-grey {
-  color: rgba(0, 0, 0, 0.8);
+.grey {
+  color: rgba(0, 0, 0, 0.7);
 }
 
 .red {
-  color: #e53935;
+  color: #D32F2F;
 }
 
 .blue {
-  color: #34a853;
+  color: #4285F4;
 }
 
 .white {
-  color: #ffffff;
+  color: #F8F9FA;
 }
+
